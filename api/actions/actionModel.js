@@ -6,10 +6,19 @@ function getActionById(actionId) {
   return db('actions')
     .where({ id: actionId })
     .first()
-    .then(res => {
+    .then(async res => {
+      const contexts = await getContexts(actionId);
       res.action_complete = !!res.action_complete;
+      res.contexts = contexts;
       return res;
     });
+}
+
+function getContexts(actionId) {
+  return db('actionContexts')
+    .select('actionContexts.id', 'contexts.context')
+    .join('contexts', 'contexts.id', 'actionContexts.context_id')
+    .where({ action_id: actionId });
 }
 
 function addAction(projectId, action) {
