@@ -1,5 +1,5 @@
 const express = require('express');
-const { addAction, updateAction, removeAction } = require('./actionModel');
+const { addAction, updateAction, removeAction, getActionById } = require('./actionModel');
 const { validateActionId, validateAction } = require('./actionMiddleware');
 
 const actionRouter = express.Router();
@@ -31,6 +31,15 @@ actionRouter.delete('/:id', validateActionId, async (req, res) => {
     return res.status(204).end();
   } catch (error) {
     return res.status(500).json({ error: 'Error deleting action' });
+  }
+});
+
+actionRouter.get('/:id', validateActionId, async (req, res) => {
+  try {
+    const action = await getActionById(req.action.id);
+    return res.status(200).json(action);
+  } catch (error) {
+    return res.status(500).json({ error: 'Error getting action' });
   }
 });
 
