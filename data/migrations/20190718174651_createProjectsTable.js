@@ -6,7 +6,10 @@ exports.up = function(knex) {
       .unique()
       .notNullable();
     table.text('project_description');
-    table.boolean('project_complete');
+    table
+      .boolean('project_complete')
+      .notNullable()
+      .defaultTo(false);
   });
 };
 

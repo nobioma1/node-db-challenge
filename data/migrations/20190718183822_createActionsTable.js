@@ -3,7 +3,10 @@ exports.up = function(knex) {
     table.increments();
     table.text('action_description').notNullable();
     table.text('action_notes');
-    table.boolean('action_complete');
+    table
+      .boolean('action_complete')
+      .notNullable()
+      .defaultTo(false);
     table
       .integer('project_id')
       .unsigned()
